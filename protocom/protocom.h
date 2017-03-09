@@ -30,6 +30,8 @@ struct PROTO_RX
 };
 
 
-uint32_t GetFrmInerLen(ptrPROTORX Protorx);
+uint32_t GetFrmInerLen_Big(ptrPROTORX Protorx);
+uint32_t GetFrmInerLen_Small(ptrPROTORX Protorx);
+
 int ProtoRx(uint8_t *pRet, uint16_t *pLen, ptrPROTORX Protorx, uint16_t ret_buf_sz);
 #endif

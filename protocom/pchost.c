@@ -26,7 +26,7 @@ struct PROTO_RX PCSetRx = {
 	5,
 	2,
 	11,
-	GetFrmInerLen,
+	GetFrmInerLen_Big,
 };
 
 ptrPROTORX SetRx = &PCSetRx;

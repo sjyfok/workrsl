@@ -4,13 +4,44 @@
 #include "protocom.h"
 
 
-
 /*GetFrmInerLen
-*获得帧内包含的长度值
+*获得帧内包含的长度值  长度值低字节在前 高字节在后
 *输入长度相对帧头的偏移长度域占用的字节个数
 *返回帧中包含的长度值
 */
-uint32_t GetFrmInerLen(ptrPROTORX Protorx)
+uint32_t GetFrmInerLen_Small(ptrPROTORX Protorx)
+{
+	int len, i = 0;
+	uint16_t head = *Protorx->pHead;
+	uint16_t Buf_len = Protorx->BufLen;
+	uint8_t *rxbuf = Protorx->pRxBuf;
+	uint16_t offset = Protorx->len_offset;
+	uint16_t cnt = Protorx->len_bycnt;
+	
+	
+	head += offset;
+	head &= Buf_len-1;
+	len = 0;
+	for (i = 0; i < cnt; i ++)
+	{	
+		len |= rxbuf[head]<<(i<<3);
+		head ++;
+		head &= Buf_len-1;
+		
+//		len <<= 8;
+//		len |= rxbuf[head];
+//		head ++;
+//		head &= Buf_len-1;
+	}
+	return len;
+}
+
+/*GetFrmInerLen_Big 
+*获得帧内包含的长度值 长度值高字节在前，低字节在后
+*输入长度相对帧头的偏移长度域占用的字节个数
+*返回帧中包含的长度值
+*/
+uint32_t GetFrmInerLen_Big(ptrPROTORX Protorx)
 {
 	int len, i = 0;
 	uint16_t head = *Protorx->pHead;
